@@ -1,0 +1,5 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/r0.1"
+    schedule: { interval: "weekly" }
