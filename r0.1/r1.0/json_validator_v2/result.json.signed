@@ -1,0 +1,33 @@
+{
+  "payload": {
+    "cost": {},
+    "env": {
+      "model_id": "claude-sonnet-4-20241022",
+      "platform": "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+      "runtime": "python-3.13.7",
+      "timestamp": "2025-10-23T22:34:45.933333Z"
+    },
+    "final_score": null,
+    "hashes": {},
+    "iterations": 1,
+    "links": {},
+    "metrics": {
+      "errors": {},
+      "latency_ms": {},
+      "negatives": {
+        "attempted": 1,
+        "blocked": 0,
+        "details_sha256": "dc388992d5b8d8ad86ea76bdc5f0f5c44682d8ae1dd36a891e371ccc1d0ad9d0"
+      },
+      "resources": {},
+      "throughput_rps": {}
+    },
+    "schema": "bauform-evals/v1.1",
+    "spec_id": "json_validator_v2",
+    "suite_id": "r1.0",
+    "time_seconds": 0.1,
+    "timestamp_utc": "2025-10-23T22:34:46Z",
+    "verdict": "needs-improvement"
+  },
+  "sig": "ed25519:3b13a43bc45c353a05283f1341251fd4c35062a7ab4084139ec09abc25e55d3fa30defcc32871b7ccdd1cb860118478749c4ccbd351f7856b3df53bf109c2e03"
+}

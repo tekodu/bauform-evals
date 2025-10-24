@@ -1,0 +1,63 @@
+{
+  "payload": {
+    "cost": {
+      "currency": "USD",
+      "total_usd": 0.0,
+      "unit_prices": {
+        "as_of": "2025-10-23",
+        "input_per_1k_usd": 0.003,
+        "model_id": "claude-sonnet-4-20241022",
+        "output_per_1k_usd": 0.015
+      }
+    },
+    "env": {
+      "model_id": "claude-sonnet-4-20241022",
+      "platform": "macOS-15.6.1-arm64-arm-64bit-Mach-O",
+      "runtime": "python-3.13.7",
+      "timestamp": "2025-10-23T22:34:48.541145Z"
+    },
+    "final_score": null,
+    "hashes": {
+      "code_sha256": "833d79beb8002370...",
+      "limits_sha256": "baee69655c694b95...",
+      "spec_sha256": "29092b51b744cff8..."
+    },
+    "iterations": 1,
+    "links": {},
+    "metrics": {
+      "errors": {
+        "429": 0,
+        "http_5xx": 0,
+        "other": 0,
+        "timeouts": 0
+      },
+      "latency_ms": {
+        "max": 146.03,
+        "mean": 57.89,
+        "min": 38.01,
+        "p50": 54.07,
+        "p95": 95.22,
+        "p99": 123.85
+      },
+      "negatives": {
+        "attempted": 0,
+        "blocked": 0,
+        "details_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "resources": {
+        "cpu_user_s": 2.5,
+        "max_rss_mb": 128.5
+      },
+      "throughput_rps": {
+        "steady_10cc": 17.28
+      }
+    },
+    "schema": "bauform-evals/v1.1",
+    "spec_id": "rest_api_echo_v2",
+    "suite_id": "r1.0",
+    "time_seconds": 1.2,
+    "timestamp_utc": "2025-10-23T22:34:49Z",
+    "verdict": "production-ready"
+  },
+  "sig": "ed25519:0fd99ec0959936b03b09bb9e32d9c0ac22e0ccf82d5e32adfcc048c772cf953e27ad06ee3533454035ac3528c7cd2bcd9486149977d640e96e9792bcfb22520a"
+}

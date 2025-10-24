@@ -1,0 +1,1 @@
+Specification: text_analyzer_v2

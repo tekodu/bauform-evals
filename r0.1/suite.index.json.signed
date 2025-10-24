@@ -1,0 +1,29 @@
+{
+  "payload": {
+    "suite_version": "r0.1",
+    "total_specs": 5,
+    "specs": [
+      {
+        "spec_id": "csv_column_analyzer_v1",
+        "path": "csv_column_analyzer_v1/result.json.signed"
+      },
+      {
+        "spec_id": "csv_email_validator_v1",
+        "path": "csv_email_validator_v1/result.json.signed"
+      },
+      {
+        "spec_id": "date_parser_v1",
+        "path": "date_parser_v1/result.json.signed"
+      },
+      {
+        "spec_id": "json_validator_v1",
+        "path": "json_validator_v1/result.json.signed"
+      },
+      {
+        "spec_id": "text_word_counter_v1",
+        "path": "text_word_counter_v1/result.json.signed"
+      }
+    ]
+  },
+  "sig": "ed25519:a6be1138e6442c1196ca7bb229ad1cf14882084a778fcdcdbd966a67906744ec7e328dbfa212b2ad8e34e5c85048a41c3c0483aef3990579648593a23ae9e70f"
+}

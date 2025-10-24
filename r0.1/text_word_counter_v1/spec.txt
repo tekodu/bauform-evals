@@ -1,0 +1,1 @@
+Build a text word counter. Upload a text file and count: total words, unique words, word frequency (top 10). Show results in table. Max file size: 10MB. Download results as JSON.

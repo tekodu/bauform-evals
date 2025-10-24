@@ -1,0 +1,57 @@
+{
+  "spec_id": "csv_column_analyzer_v1",
+  "tool_id": "bd27747bedc1",
+  "tool_name": "CSV Column Analyzer",
+  "spec": "Build a CSV column analyzer. Upload a CSV file and analyze each column: count total rows, for each column show unique values, most common value, data type. Display results in a table. Download results as JSON. Max file size: 10MB, max rows: 100000.",
+  "domain": "Data Analysis",
+  "timestamp": "2025-10-24T00:18:35.798848+00:00",
+  "verdict": "production-ready",
+  "gates_passed": true,
+  "gates": {
+    "functional": true,
+    "security": true,
+    "performance": true,
+    "stability": true
+  },
+  "metrics": {
+    "functional": {
+      "test_cases": 1,
+      "passed": 1,
+      "failed": 0,
+      "success_rate": 100.0,
+      "error": null
+    },
+    "security": {
+      "file_size_limits": true,
+      "row_limits": true,
+      "secure_file_handling": true
+    },
+    "performance": {
+      "latency_ms": 179.15010452270508,
+      "p50_ms": 179.15010452270508,
+      "p95_ms": 179.15010452270508,
+      "p99_ms": 179.15010452270508
+    }
+  },
+  "deployment": {
+    "url": "https://bauform-showcase.fly.dev/tool/bd27747bedc1",
+    "status": "live",
+    "platform": "fly.io",
+    "runtime": "python-3.13",
+    "framework": "streamlit"
+  },
+  "verification": {
+    "method": "automated_testing",
+    "validator": "bauform_r1.0_suite",
+    "reproducible": true
+  },
+  "hashes": {
+    "spec_sha256": "7ba8c1792b5c00dc3bce1fc793dbffe65352c8b3dfe61de89b8aaa3867641e77",
+    "result_sha256": "5060cf58e441ca541ec38a7500463f2ec83809d9910eaf857ea8bc05e9f21a47"
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "signature_hex": "55b01cb6957a674525bc14f332790b3b36722973f008c0447e305a634be022c48293449eebb1f56c4899a85d64616e4a280f708ec0039b1ae58b60c738274c0e",
+    "signed_at": "2025-10-24T00:18:35.798848+00:00"
+  }
+}

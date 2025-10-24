@@ -1,0 +1,32 @@
+{
+  "schema_version": "bauform-evals/v1",
+  "tools": {
+    "94b9e5950cb6": {
+      "name": "CSV Email Validator",
+      "max_file_size_mb": null,
+      "max_rows": null,
+      "note": "Tool implements 100MB/1M row limits internally; not in original spec"
+    },
+    "bd27747bedc1": {
+      "name": "CSV Column Analyzer",
+      "max_file_size_mb": 10,
+      "max_rows": 100000
+    },
+    "4775e403851d": {
+      "name": "JSON Validator",
+      "max_file_size_mb": 5,
+      "max_rows": null
+    },
+    "b5488dc4cd33": {
+      "name": "Text Word Counter",
+      "max_file_size_mb": 10,
+      "max_rows": null
+    },
+    "c230471f9c1c": {
+      "name": "Date Parser",
+      "max_file_size_mb": 5,
+      "max_rows": null
+    }
+  }
+}
+

@@ -1,0 +1,21 @@
+name: verify-artifacts
+on:
+  push: { branches: [ main ] }
+  pull_request:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install pynacl
+      - name: Suite signature + coverage
+        run: python r0.1/validate_suite.py r0.1/suite.index.json.signed r0.1/public_key.txt
+      - name: Verify all bundles
+        run: |
+          for b in r0.1/*/result.json.signed; do
+            echo "Checking $b"
+            python r0.1/verify_bundle.py "$b" --pubkey $(tr -d '\n\r' < r0.1/public_key.txt) || exit 1
+          done
+

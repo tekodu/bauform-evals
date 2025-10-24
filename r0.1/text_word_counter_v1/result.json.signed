@@ -1,0 +1,60 @@
+{
+  "payload": {
+    "spec_id": "text_word_counter_v1",
+    "tool_id": "b5488dc4cd33",
+    "tool_name": "Text Word Counter",
+    "spec": "Build a text word counter. Upload a text file and count: total words, unique words, word frequency (top 10). Show results in table. Max file size: 10MB. Download results as JSON.",
+    "domain": "Text Processing",
+    "timestamp": "2025-10-24T00:24:58.184265+00:00",
+    "verdict": "production-ready",
+    "gates_passed": true,
+    "gates": {
+      "functional": true,
+      "security": true,
+      "performance": true,
+      "stability": true
+    },
+    "metrics": {
+      "functional": {
+        "test_cases": 1,
+        "passed": 1,
+        "failed": 0,
+        "success_rate": 100.0,
+        "error": null
+      },
+      "security": {
+        "file_size_limits": true,
+        "row_limits": true,
+        "secure_file_handling": true
+      },
+      "performance": {
+        "latency_ms": 142.1661376953125,
+        "p50_ms": 142.1661376953125,
+        "p95_ms": 142.1661376953125,
+        "p99_ms": 142.1661376953125
+      }
+    },
+    "deployment": {
+      "url": "https://bauform-showcase.fly.dev/tool/b5488dc4cd33",
+      "status": "live",
+      "platform": "fly.io",
+      "runtime": "python-3.13",
+      "framework": "streamlit"
+    },
+    "verification": {
+      "method": "automated_testing",
+      "validator": "bauform_r1.0_suite",
+      "reproducible": true
+    },
+    "hashes": {
+      "spec_sha256": "dc6f31db3eb3eefa57a659b01670111a96a6da2087c561cfeb30fbdf4700afb4",
+      "result_sha256": "d2ec3c1ca1701e787f6ad6e09e08297a3ae2e26fd086e724d120a7f911a22a60"
+    },
+    "signature": {
+      "algorithm": "Ed25519",
+      "signature_hex": "8672a50cbebec724576f349279a886969844fa3301bcd265ab824cf684c34b9414ba4915bae822dfdcf7ba1dcf83e2579bd0936a5498291beaf03511e09cb30e",
+      "signed_at": "2025-10-24T00:24:58.184265+00:00"
+    }
+  },
+  "sig": "ed25519:63e2eb90ce32623a776890ed933842263ddc44a1fce478c39a4e54670d2b77c9a262c49df804d3929fb5ba6db8b0f00b2cb2aef5db4b5518777612c466e61506"
+}

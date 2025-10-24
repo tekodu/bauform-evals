@@ -1,0 +1,51 @@
+{
+  "payload": {
+    "spec_id": "date_parser_v1",
+    "tool_id": "c230471f9c1c",
+    "tool_name": "Date Parser",
+    "spec": "Build a date parser. Upload a text file with dates in various formats. Extract all dates, show original format and parsed ISO 8601 format. Max file size: 5MB. Download results as JSON.",
+    "domain": "Date Processing",
+    "timestamp": "2025-10-24T01:09:44.933044+00:00",
+    "verdict": "production-ready",
+    "gates_passed": true,
+    "gates": {
+      "functional": true,
+      "security": true,
+      "performance": true,
+      "stability": true
+    },
+    "metrics": {
+      "functional": {
+        "test_cases": 1,
+        "passed": 1,
+        "failed": 0,
+        "success_rate": 100.0
+      },
+      "security": {
+        "file_size_limits": true,
+        "row_limits": false,
+        "secure_file_handling": true
+      },
+      "performance": {
+        "latency_ms": 285.0639820098877,
+        "p50_ms": 285.0639820098877,
+        "p95_ms": 285.0639820098877,
+        "p99_ms": 285.0639820098877,
+        "generation_time_seconds": 303.2042579650879
+      }
+    },
+    "deployment": {
+      "url": "https://bauform-showcase.fly.dev/tool/c230471f9c1c",
+      "status": "live",
+      "platform": "fly.io",
+      "runtime": "python-3.13",
+      "framework": "streamlit"
+    },
+    "signature": {
+      "algorithm": "Ed25519",
+      "signature_hex": "c410929dba6606f48483b75fc2f9aad86dcc442c6b0d3c8d60c92c6beef67d164cb45e2330d462cecf773749f95f8ef5ed1d05446bdd246f69ab730288733b0b",
+      "signed_at": "2025-10-24T01:09:44.933044+00:00"
+    }
+  },
+  "sig": "ed25519:333e4142a7873b6b3139390ddce04f01ea1114896d4cfb3786f4ec7c2899887c7f2c5022defe586ef1e5c179ea7d3f7967d7832cf9205152a127f31b1147f102"
+}

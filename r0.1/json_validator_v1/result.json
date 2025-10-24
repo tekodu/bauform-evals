@@ -1,0 +1,57 @@
+{
+  "spec_id": "json_validator_v1",
+  "tool_id": "4775e403851d",
+  "tool_name": "JSON Validator",
+  "spec": "Build a JSON validator. Upload a JSON file and validate: correct syntax, structure depth, key-value pairs. Show validation status, any errors, structure summary. Max file size: 5MB. Download validation report as JSON.",
+  "domain": "Data Validation",
+  "timestamp": "2025-10-24T00:21:58.620476+00:00",
+  "verdict": "production-ready",
+  "gates_passed": true,
+  "gates": {
+    "functional": true,
+    "security": true,
+    "performance": true,
+    "stability": true
+  },
+  "metrics": {
+    "functional": {
+      "test_cases": 1,
+      "passed": 1,
+      "failed": 0,
+      "success_rate": 100.0,
+      "error": null
+    },
+    "security": {
+      "file_size_limits": true,
+      "row_limits": true,
+      "secure_file_handling": true
+    },
+    "performance": {
+      "latency_ms": 131.14690780639648,
+      "p50_ms": 131.14690780639648,
+      "p95_ms": 131.14690780639648,
+      "p99_ms": 131.14690780639648
+    }
+  },
+  "deployment": {
+    "url": "https://bauform-showcase.fly.dev/tool/4775e403851d",
+    "status": "live",
+    "platform": "fly.io",
+    "runtime": "python-3.13",
+    "framework": "streamlit"
+  },
+  "verification": {
+    "method": "automated_testing",
+    "validator": "bauform_r1.0_suite",
+    "reproducible": true
+  },
+  "hashes": {
+    "spec_sha256": "1a71c5246ed24a4dcb6d8499477eec4e8aa6f2b96bedc75c878c7a0e565e8905",
+    "result_sha256": "9d92a1375bc557de9627fbd5be46cc6053262e211003e7aee0231d3e2f812524"
+  },
+  "signature": {
+    "algorithm": "Ed25519",
+    "signature_hex": "59262b2fe197ac77561d07ca0fd2e29b8b7c078f97cd97d9b22f66063cf8edb7c54b3582b98603ebe9cac7d26d6b0ea02cdf09984436dd28e01ebe1736a90e0c",
+    "signed_at": "2025-10-24T00:21:58.620476+00:00"
+  }
+}

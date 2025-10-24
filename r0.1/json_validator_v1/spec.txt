@@ -1,0 +1,1 @@
+Build a JSON validator. Upload a JSON file and validate: correct syntax, structure depth, key-value pairs. Show validation status, any errors, structure summary. Max file size: 5MB. Download validation report as JSON.

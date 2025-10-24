@@ -1,0 +1,1 @@
+Build a CSV email validator that validates email format and returns results

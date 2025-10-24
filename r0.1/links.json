@@ -1,0 +1,42 @@
+{
+  "schema_version": "bauform-evals/v1",
+  "tools": [
+    {
+      "tool_id": "94b9e5950cb6",
+      "name": "CSV Email Validator",
+      "url": "https://bauform-showcase.fly.dev/tool/94b9e5950cb6",
+      "status": "live",
+      "last_checked": "2025-10-24T00:00:00Z"
+    },
+    {
+      "tool_id": "bd27747bedc1",
+      "name": "CSV Column Analyzer",
+      "url": "https://bauform-showcase.fly.dev/tool/bd27747bedc1",
+      "status": "live",
+      "last_checked": "2025-10-24T00:18:00Z"
+    },
+    {
+      "tool_id": "4775e403851d",
+      "name": "JSON Validator",
+      "url": "https://bauform-showcase.fly.dev/tool/4775e403851d",
+      "status": "live",
+      "last_checked": "2025-10-24T00:25:00Z"
+    },
+    {
+      "tool_id": "b5488dc4cd33",
+      "name": "Text Word Counter",
+      "url": "https://bauform-showcase.fly.dev/tool/b5488dc4cd33",
+      "status": "live",
+      "last_checked": "2025-10-24T00:32:00Z"
+    },
+    {
+      "tool_id": "c230471f9c1c",
+      "name": "Date Parser",
+      "url": "https://bauform-showcase.fly.dev/tool/c230471f9c1c",
+      "status": "live",
+      "last_checked": "2025-10-24T01:00:00Z"
+    }
+  ],
+  "note": "If a tool is offline, verification uses signed bundles in repository"
+}
+
