@@ -1,5 +1,6 @@
 {
   "schema_version": "bauform-evals/v1",
+  "suite": "r0.1",
   "tools": [
     {
       "tool_id": "94b9e5950cb6",
@@ -23,13 +24,6 @@
       "last_checked": "2025-10-24T00:25:00Z"
     },
     {
-      "tool_id": "b5488dc4cd33",
-      "name": "Text Word Counter",
-      "url": "https://bauform-showcase.fly.dev/tool/b5488dc4cd33",
-      "status": "live",
-      "last_checked": "2025-10-24T00:32:00Z"
-    },
-    {
       "tool_id": "c230471f9c1c",
       "name": "Date Parser",
       "url": "https://bauform-showcase.fly.dev/tool/c230471f9c1c",
@@ -37,6 +31,15 @@
       "last_checked": "2025-10-24T01:00:00Z"
     }
   ],
-  "note": "If a tool is offline, verification uses signed bundles in repository"
+  "withdrawn": [
+    {
+      "tool_id": "b5488dc4cd33",
+      "name": "Text Word Counter",
+      "reason": "Code generation issue - module import namespace collision",
+      "withdrawn_date": "2025-10-24",
+      "details": "See WITHDRAWN.md"
+    }
+  ],
+  "note": "If a tool is offline, verification uses signed bundles in repository. Suite: 4/4 tools @ 100% success rate."
 }
 
