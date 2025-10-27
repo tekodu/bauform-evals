@@ -79,6 +79,15 @@ Every generated tool must pass **all five gates** to be considered production-re
 
 ---
 
+## Results Summary
+
+- **Paper (October 2025):** 4 example tools detailed
+- **Full benchmark:** 10 tools evaluated
+- **Success rate:** 10/10 (100%)
+- **All results cryptographically signed and verifiable**
+
+---
+
 ## Current Specifications (r1.0)
 
 | ID | Name | Category | Spec File |
