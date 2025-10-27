@@ -1,0 +1,135 @@
+spec:
+  id: "004"
+  name: "JSON Validator with Schema Support"
+  version: "2.0"
+  category: "data_processing"
+  
+  description: |
+    Validate JSON documents against JSON Schema (Draft 7 or later).
+    Must detect malformed JSON, enforce depth limits to prevent bombs,
+    and provide clear validation errors with JSONPath locations.
+  
+  functional_requirements:
+    - "Parse and validate JSON documents"
+    - "Support JSON Schema Draft 7+ validation"
+    - "Detect depth bombs (excessive nesting)"
+    - "Provide validation errors with JSONPath locations"
+    - "Handle Unicode correctly"
+    - "Support large but reasonable JSON documents"
+  
+  security_requirements:
+    - "Reject JSON depth bombs (>64 levels deep)"
+    - "Prevent billion laughs attack (entity expansion)"
+    - "Enforce maximum document size"
+    - "No code execution from JSON content"
+  
+  constraints:
+    max_body_bytes: 1048576  # 1MB
+    max_json_depth: 64
+    timeout_seconds: 30
+    max_memory_mb: 256
+  
+  performance_targets:
+    p50_latency_ms: 80
+    p95_latency_ms: 400
+    p99_latency_ms: 800
+    throughput_rps: 50
+    cold_start_ms: 1500
+  
+  test_scenarios:
+    golden_cases:
+      - name: "valid_simple"
+        input: '{"name": "John", "age": 30}'
+        schema:
+          type: "object"
+          properties:
+            name: {type: "string"}
+            age: {type: "number"}
+          required: ["name", "age"]
+        expected_output:
+          valid: true
+      
+      - name: "invalid_type_mismatch"
+        input: '{"name": "John", "age": "thirty"}'
+        schema:
+          type: "object"
+          properties:
+            age: {type: "number"}
+        expected_output:
+          valid: false
+          error: "type_mismatch"
+          path: "$.age"
+      
+      - name: "invalid_missing_required"
+        input: '{"name": "John"}'
+        schema:
+          type: "object"
+          required: ["name", "age"]
+        expected_output:
+          valid: false
+          error: "missing_required"
+    
+    adversarial_cases:
+      - name: "depth_bomb"
+        description: "128 levels of nesting"
+        input: '{"a":' * 128 + 'null' + '}' * 128
+        expected_behavior: "Reject with 400 error (exceeds 64 level limit)"
+      
+      - name: "huge_array"
+        description: "Extremely large array"
+        input: "[" + ",".join(["1"] * 1000000) + "]"
+        expected_behavior: "Reject with 413 if exceeds size limit"
+    
+    limit_enforcement:
+      - name: "oversized_json"
+        description: "JSON exceeding 1MB"
+        size_mb: 2
+        expected_response: "413 Payload Too Large"
+  
+  validation_gates:
+    functional:
+      - json_schema_validation_correct
+      - clear_error_messages_with_paths
+      - unicode_handling
+      - all_schema_keywords_supported
+    
+    security:
+      - depth_bombs_rejected
+      - size_limits_enforced
+      - no_code_execution
+    
+    limits:
+      - body_size_enforced
+      - depth_limit_enforced
+      - returns_400_for_depth_bombs
+    
+    performance:
+      - p95_latency_under_400ms
+      - efficient_parsing
+      - memory_bounded
+    
+    stability:
+      - deterministic_validation
+      - graceful_error_recovery
+  
+  deployment:
+    runtime: "python3.11+"
+    interface: "REST API (POST /validate)"
+    dependencies:
+      - "jsonschema library"
+      - "json module"
+    
+    example_request:
+      method: "POST"
+      endpoint: "/validate"
+      content_type: "application/json"
+      body:
+        document: {name: "test"}
+        schema: {type: "object"}
+    
+    example_response:
+      status: 200
+      content_type: "application/json"
+      body:
+        valid: true
+

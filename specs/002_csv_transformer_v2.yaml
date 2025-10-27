@@ -1,0 +1,147 @@
+spec:
+  id: "002"
+  name: "CSV Transformer with Column Operations"
+  version: "2.0"
+  category: "data_processing"
+  
+  description: |
+    Transform CSV files by applying operations to columns: uppercase, lowercase,
+    filtering rows, column selection, and value mapping. Must handle large files
+    efficiently and maintain data integrity.
+  
+  functional_requirements:
+    - "Parse CSV with encoding detection"
+    - "Apply transformations: uppercase, lowercase, filter, select columns, map values"
+    - "Handle quoted fields correctly during transformation"
+    - "Preserve data types where applicable"
+    - "Return transformed CSV with same structure (unless columns selected)"
+    - "Support chaining multiple operations"
+  
+  security_requirements:
+    - "Block CSV formula injection in both input and output"
+    - "Prevent code injection through transformation rules"
+    - "Sanitize filter expressions (no eval/exec)"
+    - "Validate transformation operations before applying"
+  
+  constraints:
+    max_file_size_mb: 10
+    max_row_count: 10000
+    timeout_seconds: 30
+    max_memory_mb: 256
+  
+  performance_targets:
+    p50_latency_ms: 200
+    p95_latency_ms: 700
+    p99_latency_ms: 1400
+    throughput_rps: 15
+    cold_start_ms: 2000
+  
+  test_scenarios:
+    golden_cases:
+      - name: "uppercase_column"
+        description: "Convert name column to uppercase"
+        input: "name,email\njohn,john@example.com\n"
+        operation: "uppercase:name"
+        expected_output:
+          transformed: true
+          rows: 1
+          sample_row:
+            name: "JOHN"
+            email: "john@example.com"
+      
+      - name: "filter_rows"
+        description: "Filter rows where age > 28"
+        input: "name,age\njohn,30\njane,25\n"
+        operation: "filter:age>28"
+        expected_output:
+          transformed: true
+          rows: 1
+      
+      - name: "select_columns"
+        description: "Select only name and age columns"
+        input: "name,email,age\njohn,john@example.com,30\n"
+        operation: "select:name,age"
+        expected_output:
+          transformed: true
+          columns: ["name", "age"]
+      
+      - name: "map_values"
+        description: "Map gender values M->Male, F->Female"
+        input: "name,gender\njohn,M\njane,F\n"
+        operation: "map:gender:M=Male,F=Female"
+        expected_output:
+          transformed: true
+          rows: 2
+    
+    adversarial_cases:
+      - name: "injection_in_transformation"
+        description: "Attempt code injection in operation"
+        input: "name,value\ntest,100\n"
+        operation: "filter:__import__('os').system('ls')"
+        expected_behavior: "Reject operation, return 400 error"
+      
+      - name: "formula_injection_preserved"
+        description: "Ensure formulas aren't created during transformation"
+        input: "name,value\ntest,1+1\n"
+        operation: "uppercase:value"
+        expected_behavior: "Output should not start with ="
+    
+    limit_enforcement:
+      - name: "oversized_transform"
+        description: "File exceeding 10MB limit"
+        file_size_mb: 15
+        expected_response: "413 Payload Too Large"
+  
+  validation_gates:
+    functional:
+      - all_transformations_apply_correctly
+      - data_integrity_maintained
+      - edge_cases_handled
+      - multiple_operations_composable
+    
+    security:
+      - no_code_injection_in_operations
+      - csv_injection_prevented
+      - transformation_rules_validated
+      - safe_filter_expressions
+    
+    limits:
+      - size_limits_enforced
+      - operation_complexity_bounded
+      - returns_appropriate_status_codes
+    
+    performance:
+      - p95_latency_under_700ms
+      - streaming_for_large_files
+      - memory_efficient_processing
+    
+    stability:
+      - deterministic_transformations
+      - error_recovery
+      - no_resource_leaks
+  
+  deployment:
+    runtime: "python3.11+"
+    interface: "REST API (POST /transform)"
+    dependencies:
+      - "csv or pandas"
+      - "Safe expression evaluator (no eval/exec)"
+    
+    example_request:
+      method: "POST"
+      endpoint: "/transform"
+      content_type: "multipart/form-data"
+      body:
+        csv_file: "file data"
+        operations: ["uppercase:name", "filter:age>25"]
+    
+    example_response:
+      status: 200
+      content_type: "text/csv"
+      body: "transformed CSV data"
+  
+  notes:
+    - "Filter expressions must be parsed safely, never use eval()"
+    - "Streaming recommended for files approaching size limits"
+    - "Transformation order matters - document expected behavior"
+

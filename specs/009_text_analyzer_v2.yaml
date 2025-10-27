@@ -1,0 +1,107 @@
+spec:
+  id: "009"
+  name: "Text Analyzer with Statistics"
+  version: "2.0"
+  category: "text_processing"
+  
+  description: |
+    Analyze text to compute statistics: word count, character count, sentence count,
+    reading time, readability scores, and keyword extraction. Must handle multiple
+    languages and large documents efficiently.
+  
+  functional_requirements:
+    - "Count words, characters, sentences, paragraphs"
+    - "Calculate reading time (assume 200-250 words/minute)"
+    - "Compute readability scores (Flesch-Kincaid, etc.)"
+    - "Extract top keywords/phrases"
+    - "Handle Unicode and multiple languages"
+    - "Detect language (optional)"
+  
+  security_requirements:
+    - "No code execution from text content"
+    - "Validate text length"
+    - "Sanitize extracted keywords"
+    - "Rate limit analysis requests"
+  
+  constraints:
+    max_body_bytes: 5242880  # 5MB
+    max_text_length_chars: 1000000  # 1 million chars
+    timeout_seconds: 30
+    max_memory_mb: 512
+  
+  performance_targets:
+    p50_latency_ms: 150
+    p95_latency_ms: 800
+    p99_latency_ms: 1600
+    throughput_rps: 20
+    cold_start_ms: 2000
+  
+  test_scenarios:
+    golden_cases:
+      - name: "simple_text"
+        input: "Hello world. This is a test. It has three sentences."
+        expected_output:
+          words: 11
+          characters: 53
+          sentences: 3
+          reading_time_seconds: 3  # ~11 words / 200 wpm
+      
+      - name: "empty_text"
+        input: ""
+        expected_output:
+          words: 0
+          characters: 0
+          sentences: 0
+      
+      - name: "unicode_text"
+        input: "Héllo wörld! 你好世界"
+        expected_output:
+          words: 4
+          characters: 16  # Including spaces
+    
+    adversarial_cases:
+      - name: "extremely_long_text"
+        input_size_chars: 2000000
+        expected_behavior: "Reject with 413 or truncate with warning"
+      
+      - name: "code_in_text"
+        input: "import os; os.system('ls')"
+        expected_behavior: "Analyze as text, no execution"
+    
+    limit_enforcement:
+      - name: "oversized_text"
+        size_mb: 10
+        expected_response: "413 Payload Too Large"
+  
+  validation_gates:
+    functional:
+      - accurate_counts
+      - reasonable_reading_time
+      - keyword_extraction_works
+      - unicode_handling
+    
+    security:
+      - no_code_execution
+      - length_validation
+      - keyword_sanitization
+    
+    limits:
+      - text_length_enforced
+      - body_size_enforced
+    
+    performance:
+      - p95_latency_under_800ms
+      - scales_to_large_texts
+      - memory_efficient
+    
+    stability:
+      - deterministic_results
+      - handles_edge_cases
+  
+  deployment:
+    runtime: "python3.11+"
+    interface: "REST API (POST /analyze)"
+    dependencies:
+      - "nltk or spacy (optional)"
+      - "textstat for readability"
+

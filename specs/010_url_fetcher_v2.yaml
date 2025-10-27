@@ -1,0 +1,154 @@
+spec:
+  id: "010"
+  name: "URL Fetcher with Retry Logic"
+  version: "2.0"
+  category: "system_utilities"
+  
+  description: |
+    Fetch URLs with exponential backoff retry logic, timeout handling, and
+    error recovery. Must prevent SSRF attacks and handle various HTTP status codes.
+  
+  functional_requirements:
+    - "Fetch URL content via HTTP/HTTPS"
+    - "Retry on transient failures (429, 503, network errors)"
+    - "Exponential backoff (1s, 2s, 4s, 8s)"
+    - "Respect timeout limits"
+    - "Return HTTP status, headers, body"
+    - "Handle redirects (follow up to 5)"
+    - "Decompress gzip/deflate responses"
+  
+  security_requirements:
+    - "Block SSRF to private IPs (127.0.0.1, 10.x, 192.168.x, 169.254.x)"
+    - "Block SSRF to metadata endpoints (169.254.169.254)"
+    - "Validate URL format before fetching"
+    - "Enforce maximum response size"
+    - "Timeout on slow responses"
+    - "Follow redirects safely (check each hop)"
+  
+  constraints:
+    max_response_bytes: 10485760  # 10MB
+    max_redirects: 5
+    timeout_seconds: 30
+    max_retries: 3
+    max_memory_mb: 256
+  
+  performance_targets:
+    p50_latency_ms: 500  # Depends on target URL
+    p95_latency_ms: 3000
+    p99_latency_ms: 5000
+    throughput_rps: 10
+    cold_start_ms: 1500
+  
+  test_scenarios:
+    golden_cases:
+      - name: "successful_fetch"
+        url: "https://httpbin.org/status/200"
+        expected_output:
+          status: 200
+          success: true
+      
+      - name: "retry_on_429"
+        url: "https://httpbin.org/status/429"  # Rate limit
+        expected_behavior: "Retry with backoff"
+      
+      - name: "follow_redirect"
+        url: "https://httpbin.org/redirect/2"
+        expected_output:
+          status: 200
+          redirects: 2
+      
+      - name: "timeout_handling"
+        url: "https://httpbin.org/delay/60"
+        timeout: 5
+        expected_behavior: "Timeout after 5s, return error"
+    
+    adversarial_cases:
+      - name: "ssrf_localhost"
+        url: "http://127.0.0.1:8000/"
+        expected_behavior: "Block with error"
+      
+      - name: "ssrf_private_ip"
+        url: "http://192.168.1.1/"
+        expected_behavior: "Block with error"
+      
+      - name: "ssrf_metadata"
+        url: "http://169.254.169.254/latest/meta-data/"
+        expected_behavior: "Block with error"
+      
+      - name: "ssrf_redirect"
+        url: "https://httpbin.org/redirect-to?url=http://127.0.0.1"
+        expected_behavior: "Block redirect to private IP"
+      
+      - name: "huge_response"
+        url: "https://httpbin.org/stream-bytes/20971520"  # 20MB
+        expected_behavior: "Stop at 10MB, truncate or error"
+    
+    limit_enforcement:
+      - name: "response_size_limit"
+        response_size_mb: 20
+        expected_response: "Truncate or error at 10MB"
+      
+      - name: "timeout_enforcement"
+        slow_url: true
+        expected_response: "Timeout after 30s"
+  
+  validation_gates:
+    functional:
+      - successful_fetches
+      - retry_logic_works
+      - exponential_backoff_correct
+      - redirect_following
+      - error_handling
+    
+    security:
+      - ssrf_blocked_localhost
+      - ssrf_blocked_private_ips
+      - ssrf_blocked_metadata
+      - ssrf_blocked_in_redirects
+      - url_validation
+    
+    limits:
+      - response_size_enforced
+      - timeout_enforced
+      - redirect_limit_enforced
+    
+    performance:
+      - p95_latency_under_3s
+      - retry_delays_correct
+      - efficient_streaming
+    
+    stability:
+      - handles_network_errors
+      - no_hanging_connections
+      - connection_pooling
+  
+  deployment:
+    runtime: "python3.11+"
+    interface: "REST API (POST /fetch)"
+    dependencies:
+      - "httpx or requests"
+      - "validators for URL validation"
+    
+    example_request:
+      method: "POST"
+      endpoint: "/fetch"
+      content_type: "application/json"
+      body:
+        url: "https://example.com"
+        timeout: 10
+        max_retries: 3
+    
+    example_response:
+      status: 200
+      content_type: "application/json"
+      body:
+        success: true
+        status_code: 200
+        content: "..."
+        headers: {}
+  
+  notes:
+    - "SSRF prevention is critical - test thoroughly"
+    - "Check SSRF on redirects too, not just initial URL"
+    - "Private IP ranges: 127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 169.254.0.0/16"
+
