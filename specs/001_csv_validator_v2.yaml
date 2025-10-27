@@ -1,0 +1,176 @@
+spec:
+  id: "001"
+  name: "CSV Validator with Encoding Detection"
+  version: "2.0"
+  category: "data_processing"
+  
+  description: |
+    Validate CSV files against expected schema with automatic encoding detection.
+    Must handle various encodings (UTF-8, Latin-1), detect and block CSV injection
+    attacks, enforce size/row limits, and provide clear validation reports.
+  
+  functional_requirements:
+    - "Parse CSV with automatic encoding detection (UTF-8, Latin-1, Windows-1252)"
+    - "Validate structure: correct number of columns, no malformed rows"
+    - "Handle quoted fields with embedded commas and newlines"
+    - "Support Unicode characters in all fields"
+    - "Return detailed validation report with row count and any errors"
+    - "Treat header-only files as valid with 0 rows"
+    - "Detect empty files and return appropriate error"
+  
+  security_requirements:
+    - "Block CSV formula injection: reject cells starting with =, +, @, or -"
+    - "Prevent path traversal: validate filenames, reject ../ or ..\\ patterns"
+    - "Sanitize error messages: no path disclosure or stack traces"
+    - "Enforce input validation: reject malformed CSV with clear errors"
+  
+  constraints:
+    max_file_size_mb: 10
+    max_row_count: 10000
+    timeout_seconds: 30
+    max_memory_mb: 256
+  
+  performance_targets:
+    p50_latency_ms: 150
+    p95_latency_ms: 600
+    p99_latency_ms: 1200
+    throughput_rps: 20
+    cold_start_ms: 2000
+  
+  test_scenarios:
+    golden_cases:
+      - name: "valid_basic_csv"
+        description: "Simple 2-row CSV with 3 columns"
+        input: "name,email,age\nJohn,john@example.com,30\nJane,jane@example.com,25\n"
+        expected_output:
+          valid: true
+          rows: 2
+      
+      - name: "valid_with_quotes"
+        description: "CSV with quoted field containing comma"
+        input: 'name,email\n"Smith, John",john@example.com\n'
+        expected_output:
+          valid: true
+          rows: 1
+      
+      - name: "invalid_missing_column"
+        description: "Row with fewer columns than header"
+        input: "name,email,age\nJohn,john@example.com\n"
+        expected_output:
+          valid: false
+          error: "column_mismatch"
+      
+      - name: "empty_file"
+        description: "Completely empty input"
+        input: ""
+        expected_output:
+          valid: false
+          error: "empty_file"
+      
+      - name: "header_only"
+        description: "Just headers, no data rows"
+        input: "name,email,age\n"
+        expected_output:
+          valid: true
+          rows: 0
+    
+    adversarial_cases:
+      - name: "csv_formula_injection_equals"
+        description: "Formula injection with ="
+        input: "name,value\ntest,=1+1\n"
+        expected_behavior: "Reject or sanitize (remove = prefix)"
+      
+      - name: "csv_formula_injection_plus"
+        description: "Formula injection with +"
+        input: "name,cmd\ntest,+cmd|'/C calc'!A0\n"
+        expected_behavior: "Reject or sanitize"
+      
+      - name: "csv_formula_injection_at"
+        description: "Formula injection with @"
+        input: "name,formula\ntest,@SUM(1,2)\n"
+        expected_behavior: "Reject or sanitize"
+      
+      - name: "path_traversal_unix"
+        description: "Path traversal attempt (Unix)"
+        filename: "../../etc/passwd.csv"
+        expected_behavior: "Reject filename, return 400 error"
+      
+      - name: "path_traversal_windows"
+        description: "Path traversal attempt (Windows)"
+        filename: "..\\..\\windows\\win.ini"
+        expected_behavior: "Reject filename, return 400 error"
+    
+    limit_enforcement:
+      - name: "oversized_file"
+        description: "File exceeding 10MB limit"
+        file_size_mb: 15
+        expected_response: "413 Payload Too Large"
+      
+      - name: "too_many_rows"
+        description: "CSV with >10,000 rows"
+        row_count: 15000
+        expected_response: "413 Payload Too Large"
+      
+      - name: "timeout_test"
+        description: "Processing exceeds 30s timeout"
+        expected_response: "504 Gateway Timeout or graceful termination"
+  
+  validation_gates:
+    functional:
+      - all_golden_cases_pass
+      - edge_cases_handled_correctly
+      - correct_output_format
+      - deterministic_behavior
+    
+    security:
+      - csv_injection_blocked_or_sanitized
+      - path_traversal_prevented
+      - no_information_disclosure_in_errors
+      - input_validation_enforced
+    
+    limits:
+      - file_size_limit_enforced
+      - row_count_limit_enforced
+      - returns_413_on_oversize
+      - graceful_timeout_handling
+    
+    performance:
+      - p95_latency_under_600ms
+      - throughput_at_least_20rps
+      - cold_start_under_2s
+      - no_performance_regression_vs_r0_1
+    
+    stability:
+      - no_memory_leaks
+      - bounded_cpu_usage
+      - deterministic_outputs
+      - clean_error_recovery
+  
+  deployment:
+    runtime: "python3.11+"
+    interface: "REST API (POST /validate)"
+    dependencies:
+      - "Built-in csv module or pandas"
+      - "chardet or charset-normalizer for encoding detection"
+    
+    example_request:
+      method: "POST"
+      endpoint: "/validate"
+      content_type: "multipart/form-data"
+      body:
+        csv_file: "file data"
+    
+    example_response:
+      status: 200
+      content_type: "application/json"
+      body:
+        valid: true
+        rows: 42
+        columns: ["name", "email", "age"]
+  
+  notes:
+    - "Encoding detection should try UTF-8 first, fall back to Latin-1 or Windows-1252"
+    - "CSV injection prevention is critical - many spreadsheet apps execute formulas"
+    - "Performance target allows for ~10MB file to process in <1 second"
+    - "Determinism may not apply if error messages include timestamps"
+

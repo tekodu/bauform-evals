@@ -1,0 +1,172 @@
+spec:
+  id: "003"
+  name: "Email Validator with RFC 5322 Compliance"
+  version: "2.0"
+  category: "validation"
+  
+  description: |
+    Validate email addresses according to RFC 5322 (and RFC 5321 for practical purposes).
+    Must handle common edge cases, Unicode in display names, and provide clear validation
+    feedback. Should distinguish between syntactically valid and deliverable addresses.
+  
+  functional_requirements:
+    - "Validate email syntax per RFC 5322"
+    - "Support quoted strings in local part"
+    - "Handle Unicode in display names"
+    - "Validate domain format (not DNS lookup required)"
+    - "Support internationalized domain names (IDN)"
+    - "Reject obviously invalid formats"
+    - "Provide specific error messages for invalid emails"
+  
+  security_requirements:
+    - "Prevent header injection (CRLF in email addresses)"
+    - "Block SQL injection attempts in email parameters"
+    - "Sanitize error messages (don't reflect full input)"
+    - "Rate limit validation requests to prevent abuse"
+  
+  constraints:
+    max_body_bytes: 1048576  # 1MB
+    max_email_length: 320  # RFC 5321 limit
+    timeout_seconds: 30
+    max_memory_mb: 128
+  
+  performance_targets:
+    p50_latency_ms: 50
+    p95_latency_ms: 800
+    p99_latency_ms: 1600
+    throughput_rps: 100
+    cold_start_ms: 1500
+  
+  test_scenarios:
+    golden_cases:
+      - name: "simple_valid"
+        description: "Standard email format"
+        input: "user@example.com"
+        expected_output:
+          valid: true
+          email: "user@example.com"
+      
+      - name: "with_subdomain"
+        description: "Email with subdomain"
+        input: "user@mail.example.com"
+        expected_output:
+          valid: true
+      
+      - name: "with_plus"
+        description: "Plus addressing"
+        input: "user+tag@example.com"
+        expected_output:
+          valid: true
+      
+      - name: "quoted_local"
+        description: "Quoted string in local part"
+        input: '"user name"@example.com'
+        expected_output:
+          valid: true
+      
+      - name: "invalid_no_at"
+        description: "Missing @ symbol"
+        input: "userexample.com"
+        expected_output:
+          valid: false
+          error: "missing_at_symbol"
+      
+      - name: "invalid_multiple_at"
+        description: "Multiple @ symbols"
+        input: "user@@example.com"
+        expected_output:
+          valid: false
+          error: "invalid_format"
+      
+      - name: "invalid_no_domain"
+        description: "Missing domain"
+        input: "user@"
+        expected_output:
+          valid: false
+          error: "missing_domain"
+      
+      - name: "invalid_spaces"
+        description: "Unquoted spaces"
+        input: "user name@example.com"
+        expected_output:
+          valid: false
+          error: "invalid_local_part"
+    
+    adversarial_cases:
+      - name: "header_injection_crlf"
+        description: "Attempt CRLF injection"
+        input: "user@example.com\r\nBcc: attacker@evil.com"
+        expected_behavior: "Reject as invalid, return 400"
+      
+      - name: "sql_injection"
+        description: "SQL injection in email parameter"
+        input: "' OR '1'='1' --@example.com"
+        expected_behavior: "Treat as invalid email, not SQL query"
+      
+      - name: "excessively_long"
+        description: "Email exceeding 320 chars"
+        input: "a" * 400 + "@example.com"
+        expected_behavior: "Reject as invalid, return 400"
+    
+    limit_enforcement:
+      - name: "oversized_body"
+        description: "Request body exceeding 1MB"
+        body_size_mb: 2
+        expected_response: "413 Payload Too Large"
+  
+  validation_gates:
+    functional:
+      - rfc_5322_compliance
+      - common_formats_accepted
+      - invalid_formats_rejected
+      - clear_error_messages
+    
+    security:
+      - header_injection_prevented
+      - no_sql_injection_vulnerability
+      - sanitized_error_outputs
+      - input_length_validated
+    
+    limits:
+      - body_size_limit_enforced
+      - email_length_validated
+      - appropriate_status_codes
+    
+    performance:
+      - p95_latency_under_800ms
+      - high_throughput_100rps
+      - efficient_validation_logic
+    
+    stability:
+      - deterministic_validation
+      - no_regex_catastrophic_backtracking
+      - graceful_error_handling
+  
+  deployment:
+    runtime: "python3.11+"
+    interface: "REST API (POST /validate)"
+    dependencies:
+      - "email-validator or custom RFC 5322 parser"
+      - "idna for internationalized domains"
+    
+    example_request:
+      method: "POST"
+      endpoint: "/validate"
+      content_type: "application/json"
+      body:
+        email: "user@example.com"
+    
+    example_response:
+      status: 200
+      content_type: "application/json"
+      body:
+        valid: true
+        email: "user@example.com"
+        domain: "example.com"
+  
+  notes:
+    - "Full RFC 5322 is complex - practical subset acceptable"
+    - "DNS validation not required (MX record lookup)"
+    - "Regex should be tested for catastrophic backtracking"
+    - "Consider accepting 99% of real emails, rejecting obvious fakes"
+

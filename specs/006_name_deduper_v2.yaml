@@ -1,0 +1,110 @@
+spec:
+  id: "006"
+  name: "Name Deduplicator with Fuzzy Matching"
+  version: "2.0"
+  category: "data_processing"
+  
+  description: |
+    Deduplicate person names using fuzzy matching to handle typos, nicknames,
+    and formatting variations. Must identify "John Smith" and "Smith, John" as duplicates.
+  
+  functional_requirements:
+    - "Detect duplicate names with different formatting"
+    - "Handle 'First Last' and 'Last, First' formats"
+    - "Match common nicknames (Bob/Robert, Bill/William)"
+    - "Normalize whitespace and punctuation"
+    - "Group duplicates with confidence scores"
+    - "Return canonical name for each group"
+  
+  security_requirements:
+    - "No code injection through name inputs"
+    - "Validate name lengths (prevent buffer overflow)"
+    - "Sanitize special characters"
+  
+  constraints:
+    max_body_bytes: 5242880  # 5MB
+    max_names_per_request: 10000
+    timeout_seconds: 30
+    max_memory_mb: 512
+  
+  performance_targets:
+    p50_latency_ms: 250
+    p95_latency_ms: 900
+    p99_latency_ms: 1800
+    throughput_rps: 8
+    cold_start_ms: 2000
+  
+  test_scenarios:
+    golden_cases:
+      - name: "format_variations"
+        input:
+          - "John Smith"
+          - "Smith, John"
+          - "John  Smith"  # Extra space
+        expected_output:
+          groups:
+            - canonical: "John Smith"
+              members: ["John Smith", "Smith, John", "John  Smith"]
+              count: 3
+      
+      - name: "nickname_matching"
+        input:
+          - "Robert Johnson"
+          - "Bob Johnson"
+        expected_output:
+          groups:
+            - canonical: "Robert Johnson"
+              members: ["Robert Johnson", "Bob Johnson"]
+              count: 2
+      
+      - name: "no_duplicates"
+        input:
+          - "John Smith"
+          - "Jane Doe"
+        expected_output:
+          groups:
+            - {canonical: "John Smith", count: 1}
+            - {canonical: "Jane Doe", count: 1}
+    
+    adversarial_cases:
+      - name: "sql_injection_in_name"
+        input:
+          - "'; DROP TABLE users; --"
+        expected_behavior: "Treat as literal name"
+      
+      - name: "extremely_long_name"
+        input:
+          - "A" * 10000
+        expected_behavior: "Reject or truncate with warning"
+  
+  validation_gates:
+    functional:
+      - format_normalization_works
+      - nickname_matching_accurate
+      - grouping_correct
+      - confidence_scores_reasonable
+    
+    security:
+      - no_injection_vulnerabilities
+      - length_validation
+      - special_char_handling
+    
+    limits:
+      - name_count_enforced
+      - body_size_enforced
+    
+    performance:
+      - p95_latency_under_900ms
+      - scales_to_10k_names
+    
+    stability:
+      - deterministic_grouping
+      - memory_efficient
+  
+  deployment:
+    runtime: "python3.11+"
+    interface: "REST API (POST /deduplicate)"
+    dependencies:
+      - "fuzzywuzzy or rapidfuzz"
+      - "nameparser (optional)"
+

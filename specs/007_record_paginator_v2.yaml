@@ -1,0 +1,124 @@
+spec:
+  id: "007"
+  name: "Record Paginator for Large Datasets"
+  version: "2.0"
+  category: "system_utilities"
+  
+  description: |
+    Paginate large datasets efficiently with cursor-based pagination.
+    Must support sorting, filtering, and maintain consistent results
+    across pages even with concurrent data modifications.
+  
+  functional_requirements:
+    - "Cursor-based pagination (more reliable than offset/limit)"
+    - "Support sorting by multiple fields"
+    - "Filter records before pagination"
+    - "Return page metadata (next cursor, total count estimate)"
+    - "Handle edge cases (empty results, last page)"
+    - "Consistent ordering across pages"
+  
+  security_requirements:
+    - "Validate cursor tokens (prevent tampering)"
+    - "Sanitize filter expressions"
+    - "Rate limit pagination requests"
+    - "No SQL injection in filters or sorts"
+  
+  constraints:
+    max_body_bytes: 1048576  # 1MB
+    max_page_size: 1000
+    default_page_size: 100
+    timeout_seconds: 30
+    max_memory_mb: 256
+  
+  performance_targets:
+    p50_latency_ms: 100
+    p95_latency_ms: 500
+    p99_latency_ms: 1000
+    throughput_rps: 30
+    cold_start_ms: 1500
+  
+  test_scenarios:
+    golden_cases:
+      - name: "first_page"
+        dataset_size: 500
+        page_size: 100
+        expected_output:
+          records: 100
+          next_cursor: "<cursor_token>"
+          has_more: true
+      
+      - name: "middle_page"
+        dataset_size: 500
+        page_size: 100
+        cursor: "<page_2_cursor>"
+        expected_output:
+          records: 100
+          next_cursor: "<cursor_token>"
+          has_more: true
+      
+      - name: "last_page"
+        dataset_size: 250
+        page_size: 100
+        cursor: "<page_3_cursor>"
+        expected_output:
+          records: 50
+          next_cursor: null
+          has_more: false
+      
+      - name: "empty_results"
+        dataset_size: 0
+        expected_output:
+          records: 0
+          next_cursor: null
+          has_more: false
+    
+    adversarial_cases:
+      - name: "tampered_cursor"
+        cursor: "tampered_base64_string"
+        expected_behavior: "Reject with 400 error"
+      
+      - name: "excessive_page_size"
+        page_size: 10000
+        expected_behavior: "Limit to 1000 or reject"
+      
+      - name: "sql_injection_in_filter"
+        filter: "name = 'test' OR '1'='1'"
+        expected_behavior: "Safe filtering, no SQL execution"
+    
+    limit_enforcement:
+      - name: "page_size_limit"
+        page_size: 5000
+        expected_response: "400 or automatic cap at 1000"
+  
+  validation_gates:
+    functional:
+      - cursor_pagination_works
+      - consistent_ordering
+      - accurate_has_more_flag
+      - metadata_correct
+    
+    security:
+      - cursor_validation
+      - filter_sanitization
+      - no_sql_injection
+    
+    limits:
+      - page_size_enforced
+      - request_rate_limited
+    
+    performance:
+      - p95_latency_under_500ms
+      - efficient_cursor_implementation
+      - scales_to_large_datasets
+    
+    stability:
+      - deterministic_ordering
+      - handles_concurrent_modifications_gracefully
+  
+  deployment:
+    runtime: "python3.11+"
+    interface: "REST API (GET /records)"
+    dependencies:
+      - "Database driver (postgres, mysql, etc.)"
+      - "Cursor encoding (base64, JWT)"
+

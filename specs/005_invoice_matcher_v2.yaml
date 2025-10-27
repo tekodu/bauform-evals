@@ -1,0 +1,125 @@
+spec:
+  id: "005"
+  name: "Invoice Matcher with Fuzzy Matching"
+  version: "2.0"
+  category: "business_logic"
+  
+  description: |
+    Match invoices to payments using fuzzy matching on amounts, dates, and reference numbers.
+    Must handle OCR errors, currency formatting variations, and provide confidence scores.
+  
+  functional_requirements:
+    - "Match invoices to payments by amount, date, reference"
+    - "Fuzzy matching for OCR errors (transposed digits, missing chars)"
+    - "Handle currency formatting (USD, EUR, etc.)"
+    - "Return confidence scores (0.0-1.0)"
+    - "Support partial matches"
+    - "Handle many-to-many relationships"
+  
+  security_requirements:
+    - "No SQL injection in search parameters"
+    - "Validate currency amounts (no negative invoices)"
+    - "Sanitize reference numbers"
+    - "Rate limit matching requests"
+  
+  constraints:
+    max_body_bytes: 10485760  # 10MB
+    max_invoices_per_request: 1000
+    timeout_seconds: 30
+    max_memory_mb: 512
+  
+  performance_targets:
+    p50_latency_ms: 200
+    p95_latency_ms: 700
+    p99_latency_ms: 1400
+    throughput_rps: 10
+    cold_start_ms: 2000
+  
+  test_scenarios:
+    golden_cases:
+      - name: "exact_match"
+        invoices:
+          - {id: "INV-001", amount: 1500.00, date: "2025-01-15", ref: "PO12345"}
+        payments:
+          - {id: "PAY-001", amount: 1500.00, date: "2025-01-16", ref: "PO12345"}
+        expected_output:
+          matches:
+            - invoice_id: "INV-001"
+              payment_id: "PAY-001"
+              confidence: 1.0
+      
+      - name: "fuzzy_reference"
+        invoices:
+          - {id: "INV-002", amount: 2500.00, ref: "PO67890"}
+        payments:
+          - {id: "PAY-002", amount: 2500.00, ref: "P067890"}  # Missing O
+        expected_output:
+          matches:
+            - invoice_id: "INV-002"
+              payment_id: "PAY-002"
+              confidence: 0.95  # High confidence despite typo
+      
+      - name: "no_match"
+        invoices:
+          - {id: "INV-003", amount: 5000.00}
+        payments:
+          - {id: "PAY-003", amount: 3000.00}
+        expected_output:
+          matches: []
+    
+    adversarial_cases:
+      - name: "sql_injection_in_reference"
+        invoices:
+          - {ref: "' OR '1'='1"}
+        expected_behavior: "Treat as literal string, no SQL execution"
+      
+      - name: "negative_amounts"
+        invoices:
+          - {amount: -1000.00}
+        expected_behavior: "Reject as invalid"
+    
+    limit_enforcement:
+      - name: "too_many_invoices"
+        invoice_count: 5000
+        expected_response: "413 or 400 with clear error"
+  
+  validation_gates:
+    functional:
+      - exact_matches_found
+      - fuzzy_matches_with_confidence
+      - no_false_positives
+      - clear_match_explanations
+    
+    security:
+      - no_sql_injection
+      - amount_validation
+      - input_sanitization
+    
+    limits:
+      - invoice_count_limit_enforced
+      - body_size_limit_enforced
+    
+    performance:
+      - p95_latency_under_700ms
+      - efficient_matching_algorithm
+    
+    stability:
+      - deterministic_confidence_scores
+      - memory_efficient
+  
+  deployment:
+    runtime: "python3.11+"
+    interface: "REST API (POST /match)"
+    dependencies:
+      - "fuzzywuzzy or rapidfuzz"
+      - "python-dateutil"
+    
+    example_request:
+      method: "POST"
+      endpoint: "/match"
+      content_type: "application/json"
+      body:
+        invoices: []
+        payments: []
+        threshold: 0.85  # Minimum confidence
+
