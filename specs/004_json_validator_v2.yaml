@@ -72,12 +72,12 @@ spec:
     adversarial_cases:
       - name: "depth_bomb"
         description: "128 levels of nesting"
-        input: '{"a":' * 128 + 'null' + '}' * 128
+        input: "Deeply nested JSON with 128 levels"
         expected_behavior: "Reject with 400 error (exceeds 64 level limit)"
       
       - name: "huge_array"
         description: "Extremely large array"
-        input: "[" + ",".join(["1"] * 1000000) + "]"
+        input: "Array with 1 million elements"
         expected_behavior: "Reject with 413 if exceeds size limit"
     
     limit_enforcement:

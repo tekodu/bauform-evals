@@ -1,0 +1,32 @@
+{
+  "spec_id": "email_validator_v2",
+  "system": "claude",
+  "timestamp": "2025-10-28T01:47:24.827788+00:00",
+  "verdict": "production-ready",
+  "gates": {
+    "functional": true,
+    "security": false,
+    "performance": true,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 78.31,
+    "code_size_bytes": 24146,
+    "latency_ms": 152.49371528625488,
+    "functional": {
+      "test_cases": 1,
+      "passed": 1,
+      "error": null
+    }
+  },
+  "deployment": {
+    "url": "https://comp-claude-email-validator-v2.fly.dev",
+    "status": "deployed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "31739e5e03f4ca78244a235268122aff5b9864ed6a35eb2c75c63e3f26a72d45"
+  }
+}

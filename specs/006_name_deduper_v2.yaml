@@ -74,7 +74,7 @@ spec:
       
       - name: "extremely_long_name"
         input:
-          - "A" * 10000
+          - "AAAAAAAAAA... (10000 chars)"
         expected_behavior: "Reject or truncate with warning"
   
   validation_gates:

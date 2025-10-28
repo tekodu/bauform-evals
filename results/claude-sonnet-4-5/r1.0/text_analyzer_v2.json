@@ -1,0 +1,32 @@
+{
+  "spec_id": "text_analyzer_v2",
+  "system": "claude",
+  "timestamp": "2025-10-28T01:37:01.598537+00:00",
+  "verdict": "production-ready",
+  "gates": {
+    "functional": true,
+    "security": false,
+    "performance": true,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 80.77,
+    "code_size_bytes": 26707,
+    "latency_ms": 158.77389907836914,
+    "functional": {
+      "test_cases": 1,
+      "passed": 1,
+      "error": null
+    }
+  },
+  "deployment": {
+    "url": "https://comp-claude-text-analyzer-v2.fly.dev",
+    "status": "deployed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "f65940f555bde22ea9bf3ced09faabdb2cc4b2062f05ebb92d4ec8034e3a3356"
+  }
+}

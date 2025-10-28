@@ -20,6 +20,14 @@ Most code generation benchmarks (HumanEval, MBPP, CodeContests) measure algorith
 | Seconds to run | Minutes to validate (includes deployment) |
 | Academic curiosity | Production utility |
 
+**Try the system:**
+```bash
+curl -X POST https://bauform-beta.fly.dev/v1/engine/generate \
+  -H "Content-Type: application/json" \
+  -d '{"spec": "CSV validator with encoding detection", "generate_ui": true}'
+```
+Returns a `job_id` - poll `GET /v1/engine/status/{job_id}` for results (~90 seconds).
+
 ---
 
 ## Benchmark Structure

@@ -1,0 +1,32 @@
+{
+  "spec_id": "rest_api_echo_v2",
+  "system": "gpt5",
+  "timestamp": "2025-10-28T02:02:05.521277+00:00",
+  "verdict": "needs-improvement",
+  "gates": {
+    "functional": false,
+    "security": false,
+    "performance": false,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 136.4,
+    "code_size_bytes": 27020,
+    "latency_ms": null,
+    "functional": {
+      "test_cases": 1,
+      "passed": 0,
+      "error": "Deployment failed"
+    }
+  },
+  "deployment": {
+    "url": null,
+    "status": "failed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "36e6c1546164b24a44baca7de327ae0d49e01a22729a4a7b8057bb14e703e087"
+  }
+}

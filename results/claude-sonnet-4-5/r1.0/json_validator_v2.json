@@ -1,0 +1,32 @@
+{
+  "spec_id": "json_validator_v2",
+  "system": "claude",
+  "timestamp": "2025-10-28T01:45:33.681223+00:00",
+  "verdict": "production-ready",
+  "gates": {
+    "functional": true,
+    "security": false,
+    "performance": true,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 43.1,
+    "code_size_bytes": 12699,
+    "latency_ms": 154.46877479553223,
+    "functional": {
+      "test_cases": 1,
+      "passed": 1,
+      "error": null
+    }
+  },
+  "deployment": {
+    "url": "https://comp-claude-json-validator-v2.fly.dev",
+    "status": "deployed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "9622cc547046869033d8a6859251d747a451f02c4db5281d0ccc0a626646b390"
+  }
+}
