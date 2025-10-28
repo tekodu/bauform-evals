@@ -1,0 +1,32 @@
+{
+  "spec_id": "csv_validator_v2",
+  "system": "gpt5",
+  "timestamp": "2025-10-28T01:45:33.735907+00:00",
+  "verdict": "production-ready",
+  "gates": {
+    "functional": true,
+    "security": false,
+    "performance": true,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 136.88,
+    "code_size_bytes": 26760,
+    "latency_ms": 160.67981719970703,
+    "functional": {
+      "test_cases": 1,
+      "passed": 1,
+      "error": null
+    }
+  },
+  "deployment": {
+    "url": "https://comp-gpt5-csv-validator-v2.fly.dev",
+    "status": "deployed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "f35938cce9e8d8530758bce8a690fc235303411c4bb4abc13a78f3346f02ee9c"
+  }
+}

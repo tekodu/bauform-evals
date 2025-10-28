@@ -1,0 +1,32 @@
+{
+  "spec_id": "name_deduper_v2",
+  "system": "claude",
+  "timestamp": "2025-10-28T01:48:34.883049+00:00",
+  "verdict": "needs-improvement",
+  "gates": {
+    "functional": false,
+    "security": false,
+    "performance": false,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 58.58,
+    "code_size_bytes": 17611,
+    "latency_ms": null,
+    "functional": {
+      "test_cases": 1,
+      "passed": 0,
+      "error": "Deployment failed"
+    }
+  },
+  "deployment": {
+    "url": null,
+    "status": "failed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "0a3a105f272a5cc54130a4ee479cee2491d1f142a012df0c1538c72058094008"
+  }
+}

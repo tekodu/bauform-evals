@@ -1,0 +1,32 @@
+{
+  "spec_id": "csv_validator_v2",
+  "system": "claude",
+  "timestamp": "2025-10-28T01:28:35.242276+00:00",
+  "verdict": "production-ready",
+  "gates": {
+    "functional": true,
+    "security": false,
+    "performance": true,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 57.2,
+    "code_size_bytes": 17424,
+    "latency_ms": 175.92620849609375,
+    "functional": {
+      "test_cases": 1,
+      "passed": 1,
+      "error": null
+    }
+  },
+  "deployment": {
+    "url": "https://comp-claude-csv-validator-v2.fly.dev",
+    "status": "deployed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "d3fd22421d40b5d4fa61c6b3aa0908e6492d3ed9660714dce3933fd75c52d68c"
+  }
+}

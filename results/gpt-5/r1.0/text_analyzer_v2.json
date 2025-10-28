@@ -1,0 +1,32 @@
+{
+  "spec_id": "text_analyzer_v2",
+  "system": "gpt5",
+  "timestamp": "2025-10-28T02:04:42.369257+00:00",
+  "verdict": "needs-improvement",
+  "gates": {
+    "functional": false,
+    "security": false,
+    "performance": false,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 146.28,
+    "code_size_bytes": 27214,
+    "latency_ms": null,
+    "functional": {
+      "test_cases": 1,
+      "passed": 0,
+      "error": "Deployment failed"
+    }
+  },
+  "deployment": {
+    "url": null,
+    "status": "failed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "7cfc1e5ebf45bebaf0bd982af9f018699cbedbe633b579f72ab3acdb3f54f6d5"
+  }
+}

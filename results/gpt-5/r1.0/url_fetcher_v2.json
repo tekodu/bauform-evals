@@ -1,0 +1,32 @@
+{
+  "spec_id": "url_fetcher_v2",
+  "system": "gpt5",
+  "timestamp": "2025-10-28T02:06:05.899414+00:00",
+  "verdict": "needs-improvement",
+  "gates": {
+    "functional": false,
+    "security": false,
+    "performance": false,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 71.54,
+    "code_size_bytes": 17810,
+    "latency_ms": null,
+    "functional": {
+      "test_cases": 1,
+      "passed": 0,
+      "error": "Deployment failed"
+    }
+  },
+  "deployment": {
+    "url": null,
+    "status": "failed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "c6a94e217768cf7282689c21e236a41afbf9588d9683e2c43b25d734afcd5d51"
+  }
+}

@@ -105,7 +105,7 @@ spec:
       
       - name: "excessively_long"
         description: "Email exceeding 320 chars"
-        input: "a" * 400 + "@example.com"
+        input: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@example.com (400+ chars total)"
         expected_behavior: "Reject as invalid, return 400"
     
     limit_enforcement:

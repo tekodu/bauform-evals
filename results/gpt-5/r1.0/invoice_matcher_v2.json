@@ -1,0 +1,32 @@
+{
+  "spec_id": "invoice_matcher_v2",
+  "system": "gpt5",
+  "timestamp": "2025-10-28T01:54:28.348283+00:00",
+  "verdict": "needs-improvement",
+  "gates": {
+    "functional": false,
+    "security": false,
+    "performance": false,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 137.49,
+    "code_size_bytes": 31960,
+    "latency_ms": null,
+    "functional": {
+      "test_cases": 1,
+      "passed": 0,
+      "error": "Deployment failed"
+    }
+  },
+  "deployment": {
+    "url": null,
+    "status": "failed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "d0d19b0aa0afe6bc7230203424a9d0c2a4000881667df68e5dcb23d8970e99df"
+  }
+}

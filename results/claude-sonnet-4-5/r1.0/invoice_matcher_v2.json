@@ -1,0 +1,32 @@
+{
+  "spec_id": "invoice_matcher_v2",
+  "system": "claude",
+  "timestamp": "2025-10-28T01:32:12.596126+00:00",
+  "verdict": "production-ready",
+  "gates": {
+    "functional": true,
+    "security": false,
+    "performance": true,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 85.91,
+    "code_size_bytes": 30824,
+    "latency_ms": 275.65693855285645,
+    "functional": {
+      "test_cases": 1,
+      "passed": 1,
+      "error": null
+    }
+  },
+  "deployment": {
+    "url": "https://comp-claude-invoice-matcher-v2.fly.dev",
+    "status": "deployed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "7f008c274d73768cbe7dc729bdd70d7d29c77e8de9f2ab6fd5532521c389ca62"
+  }
+}

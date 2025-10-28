@@ -1,0 +1,32 @@
+{
+  "spec_id": "rest_api_echo_v2",
+  "system": "claude",
+  "timestamp": "2025-10-28T01:35:09.632554+00:00",
+  "verdict": "production-ready",
+  "gates": {
+    "functional": true,
+    "security": false,
+    "performance": true,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 48.62,
+    "code_size_bytes": 14410,
+    "latency_ms": 211.5640640258789,
+    "functional": {
+      "test_cases": 1,
+      "passed": 1,
+      "error": null
+    }
+  },
+  "deployment": {
+    "url": "https://comp-claude-rest-api-echo-v2.fly.dev",
+    "status": "deployed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "4215b25e6bcc555d47dd4faf1791813c98c85dab9f77fa26d99d88ab7dd85856"
+  }
+}

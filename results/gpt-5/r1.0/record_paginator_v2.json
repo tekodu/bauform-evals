@@ -1,0 +1,32 @@
+{
+  "spec_id": "record_paginator_v2",
+  "system": "gpt5",
+  "timestamp": "2025-10-28T01:59:39.206974+00:00",
+  "verdict": "needs-improvement",
+  "gates": {
+    "functional": false,
+    "security": false,
+    "performance": false,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 138.05,
+    "code_size_bytes": 28679,
+    "latency_ms": null,
+    "functional": {
+      "test_cases": 1,
+      "passed": 0,
+      "error": "Deployment failed"
+    }
+  },
+  "deployment": {
+    "url": null,
+    "status": "failed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "ede8f80bb4db74daab3efd84ae8142691ad3b22020e18e1dcb412bad94f69d00"
+  }
+}

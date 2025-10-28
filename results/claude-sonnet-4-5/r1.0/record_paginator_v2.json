@@ -1,0 +1,32 @@
+{
+  "spec_id": "record_paginator_v2",
+  "system": "claude",
+  "timestamp": "2025-10-28T01:33:47.856908+00:00",
+  "verdict": "production-ready",
+  "gates": {
+    "functional": true,
+    "security": false,
+    "performance": true,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 61.11,
+    "code_size_bytes": 20064,
+    "latency_ms": 158.79297256469727,
+    "functional": {
+      "test_cases": 1,
+      "passed": 1,
+      "error": null
+    }
+  },
+  "deployment": {
+    "url": "https://comp-claude-record-paginator-v.fly.dev",
+    "status": "deployed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "4d4653d61fa76737e6e5d1c198a49649def06224ab4c5d9115abd629d75a5238"
+  }
+}

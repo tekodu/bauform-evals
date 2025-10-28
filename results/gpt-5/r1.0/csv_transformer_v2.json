@@ -1,0 +1,32 @@
+{
+  "spec_id": "csv_transformer_v2",
+  "system": "gpt5",
+  "timestamp": "2025-10-28T01:47:52.942109+00:00",
+  "verdict": "production-ready",
+  "gates": {
+    "functional": true,
+    "security": false,
+    "performance": true,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 104.7,
+    "code_size_bytes": 25391,
+    "latency_ms": 385.9388828277588,
+    "functional": {
+      "test_cases": 1,
+      "passed": 1,
+      "error": null
+    }
+  },
+  "deployment": {
+    "url": "https://comp-gpt5-csv-transformer-v2.fly.dev",
+    "status": "deployed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "909eda3c437b4c7f95756418c79f513f599ea29f29b258e099bee6d039409593"
+  }
+}

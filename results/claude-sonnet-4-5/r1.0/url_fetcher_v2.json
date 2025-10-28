@@ -1,0 +1,32 @@
+{
+  "spec_id": "url_fetcher_v2",
+  "system": "claude",
+  "timestamp": "2025-10-28T01:38:34.888443+00:00",
+  "verdict": "production-ready",
+  "gates": {
+    "functional": true,
+    "security": false,
+    "performance": true,
+    "stability": false,
+    "limits": false
+  },
+  "metrics": {
+    "generation_time_seconds": 59.04,
+    "code_size_bytes": 19621,
+    "latency_ms": 142.19307899475098,
+    "functional": {
+      "test_cases": 1,
+      "passed": 1,
+      "error": null
+    }
+  },
+  "deployment": {
+    "url": "https://comp-claude-url-fetcher-v2.fly.dev",
+    "status": "deployed",
+    "platform": "fly.io"
+  },
+  "schema": "bauform-evals/v1.1",
+  "hashes": {
+    "code_sha256": "f2304b2e22f5f6c7389a84e3e3792571e3506c8c5d7bf17e2745890334cdb76e"
+  }
+}
